@@ -14,16 +14,17 @@ class Pacientes {
     }
 
 /***New***/    
-    new(nombre, apellido, identidad, telefono, correo) {
+    new(nombres, apellidos, identidad, telefono, correo) {
         return new Promise((accept, reject) => {
             db.run(
-                'INSERT INTO pacientes (identidad, nombre, apellidos, email, telefono) VALUES(?,?,?,?,?);', [nombre, apellido, identidad, correo, telefono],
-                (err, rslt) => {
+                'INSERT INTO pacientes (identidad, nombre, apellidos, email, telefono) VALUES(?,?,?,?,?);', 
+                [identidad,nombres, apellidos, correo, telefono],
+                function (err){
                     if (err) {
                         console.error(err);
                         reject(err)
                     }
-                    accept(rslt);
+                    accept(this.lastID);
                 }
             )
         })
