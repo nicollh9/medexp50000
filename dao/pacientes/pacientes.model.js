@@ -16,6 +16,7 @@ class Pacientes {
       .catch((err) => { console.error(err) });
   }
 
+  //NEW
   async new(nombres, apellidos, identidad, telefono, correo) {
     const newPaciente = {
       nombres,
@@ -28,11 +29,14 @@ class Pacientes {
     return rslt;
   }
 
+  //GET ALL
   async getAll() {
     const cursor = this.collection.find({});
     const documents = await cursor.toArray();
     return documents;
   }
+
+  //GET FACETED
   async getFaceted(page, items, filter = {}) {
     const cursor = this.collection.find(filter);
     const totalItems = await cursor.count();
@@ -47,6 +51,8 @@ class Pacientes {
       resultados
     };
   }
+
+  //GET BYID
   async getById(id) {
     const _id = new ObjectId(id);
     const filter = {_id};
@@ -55,6 +61,7 @@ class Pacientes {
     return myDocument;
   }
 
+  //UPDATE ONE
   async updateOne(id, nombres, apellidos, identidad, telefono, correo) {
     const filter = {_id: new ObjectId(id)};
     // UPDATE PACIENTES SET campo=valor, campo=valor where id= id;
@@ -70,6 +77,50 @@ class Pacientes {
     return await this.collection.updateOne(filter, updateCmd);
   }
 
+  //UPDATE ADD TAG
+  async updateAddTag(id, tagEntry){
+    const updateCmd={
+      "$push":{
+        tags: tagEntry
+      }
+    }
+    const filter = {_id: new ObjectId(id)}
+    return await this.collection.updateOne(filter,updateCmd);
+  }
+
+  //UPDATE ADD TAG SET
+  async updateAddTagSet(id, tagEntry){
+    const updateCmd={
+      "$addToSet":{
+        tags: tagEntry
+      }
+    }
+    const filter = {_id: new ObjectId(id)}
+    return await this.collection.updateOne(filter,updateCmd);
+  }
+
+  //UPDATE POP TAG
+  async updatePopTag(id, tagEntry){
+    const updateCmd={
+      '$set': { 
+        tags: {
+            '$let': {
+                vars: { ix: { '$indexOfArray': [ '$tags', tagEntry ] } },
+                in: { '$concatArrays': [
+                          {' $slice': [ '$tags', 0, '$$ix'] },
+                          [ ],
+                          { $slice: [ '$tags', {'$add': [ 1, '$$ix' ] }, { '$size': '$tags' } ] }
+                     ]
+                }
+           }
+       }
+   }
+    };
+    const filter = {_id: new ObjectId(id)}
+    return await this.collection.updateOne(filter,updateCmd);
+  }
+
+  //DELETE
   async deleteOne(id) {
     const filter = {_id: new ObjectId(id)};
     return await this.collection.deleteOne(filter);
