@@ -10,7 +10,10 @@ router.use(
     pacientesRoutes
 );
 
-router.use('/expedientes', expedientesRoutes);
+router.use(
+    '/expedientes', 
+    verifyApiHeaderToken, 
+    expedientesRoutes);
 
 
 module.exports = router;
