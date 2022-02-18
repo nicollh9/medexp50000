@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
   );
 }); 
 
-//GET /
+//GET 
 router.get('/all', async (req, res) => {
   try {
     const rows = await pacienteModel.getAll();
@@ -24,7 +24,7 @@ router.get('/all', async (req, res) => {
   }
 } );
 
-// /byid/1;
+//BY ID
 router.get('/byid/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -38,7 +38,7 @@ router.get('/byid/:id', async (req, res) => {
 
 const allowedItemsNumber = [10, 15, 20];
 
-//facet search
+//FACET SEARCH
 router.get('/facet/:page/:items', async (req, res) => {
   const page = parseInt(req.params.page, 10);
   const items = parseInt(req.params.items, 10);
@@ -56,7 +56,7 @@ router.get('/facet/:page/:items', async (req, res) => {
 
 });
 
-///
+//
 router.get('/byname/:name/:page/:items', async (req, res) => {
   const name = req.params.name;
   const page = parseInt(req.params.page, 10);
@@ -75,7 +75,7 @@ router.get('/byname/:name/:page/:items', async (req, res) => {
 
 });
 
-///
+//
 router.get('/byagegender/:age/:gender', async (req, res) => {
   try {
     const { age, gender } = req.params;
@@ -87,7 +87,7 @@ router.get('/byagegender/:age/:gender', async (req, res) => {
   }
 });
 
-///
+//ROUTER.POST
 router.post('/new', async (req, res) => {
   const { nombres, apellidos, identidad, email, telefono } = req.body;
   try {
@@ -105,10 +105,9 @@ router.post('/new', async (req, res) => {
         result: {}
       });
   }
-}); //POST /new
+}); 
 
-
-//router.put();
+//ROUTER.PUT
 router.put('/update/:id', async (req, res) => {
   try{
     const { nombres, apellidos, identidad, email, telefono } = req.body;
@@ -124,7 +123,7 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
-//Add tag
+//ADD TAG
 router.put('/addtag/:id', async (req, res) => {
   try{
     const { tag } = req.body;
@@ -140,7 +139,7 @@ router.put('/addtag/:id', async (req, res) => {
   }
 });
 
-//Add tag set
+//ADD TAG SET
 router.put('/addtagset/:id', async (req, res) => {
   try{
     const {tag } = req.body;
@@ -156,7 +155,7 @@ router.put('/addtagset/:id', async (req, res) => {
   }
 });
 
-//Remove tag
+//REMOVE TAG
 router.put('/removetag/:id', async (req, res) => {
   try{
     const {tag } = req.body;
@@ -172,7 +171,7 @@ router.put('/removetag/:id', async (req, res) => {
   }
 });
 
-//router.delete();
+//ROUTER.DELETE
 router.delete('/delete/:id', async (req, res) => {
   try {
     const { id } = req.params;

@@ -1,7 +1,7 @@
 const ObjectId = require('mongodb').ObjectId;
 const getDb = require('../mongodb');
-
 let db = null;
+
 class Pacientes {
   collection = null;
   constructor() {
